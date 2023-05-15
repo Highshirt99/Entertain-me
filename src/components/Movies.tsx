@@ -91,7 +91,7 @@ const Movies = () => {
               className="h-[100px] object-cover rounded-lg hover:scale-110 cursor-pointer text-white"
             />
           </Link>
-          <h1 className="text-white text-sm w-[150px]">{movie.title}</h1>
+          <h1 className="text-white text-sm w-[100px]">{movie.title}</h1>
         </div>
       ));
 
@@ -135,7 +135,7 @@ const Movies = () => {
         <div>
           {moviesList[0]?.length > 0 ? (
             <>
-              <div className="grid grid-cols-2 midi:grid-cols-4 tab:grid-cols-4 lg:grid-cols-5 gap-4 mt-[1rem] p-[2rem]">
+              <div className="grid grid-cols-3 midi:grid-cols-4 tab:grid-cols-4 lg:grid-cols-5 gap-4 mt-[1rem] p-[2rem]">
                 {displayMovies}
               </div>
               <div className="mb-5">
