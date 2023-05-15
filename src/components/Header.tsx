@@ -13,7 +13,7 @@ const Header = () => {
         </h1>
       </Link>
 
-      <div className="flex items-center justify-center gap-6 lg:gap-12 ">
+      <div className="flex items-center justify-center gap-8 lg:gap-12 ">
         <Link to="/" className="hover:text-red-500">
           <FaHome />
         </Link>

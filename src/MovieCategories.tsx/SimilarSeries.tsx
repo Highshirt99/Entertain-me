@@ -45,7 +45,7 @@ const SimilarSeries = ({ id }: SimilarProps) => {
   });
 
   return (
-    <div className="p-[1rem]">
+    <div className="px-[1rem] h-auto my-[20px]">
       <div className="p-[1rem] border-b-[3px] border-b-red-500 pb-6">
         <h1 className="text-white font-bold tracking-wide  text-[20px]">
           Similar Series

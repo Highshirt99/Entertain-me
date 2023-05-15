@@ -20,7 +20,7 @@ const Popular = () => {
     getTrendingMovies();
   }, [getTrendingMovies]);
   return (
-    <div className="p-[1rem] h-auto">
+    <div className="px-[1rem] h-auto my-[20px]">
       <h1 className="text-white font-bold tracking-wide py-4 text-[20px]">
         Popular
       </h1>

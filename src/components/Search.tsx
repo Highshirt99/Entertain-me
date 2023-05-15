@@ -117,7 +117,7 @@ const Search = () => {
             </div>
         </div>
       ) : (
-        <p className="text-red-600 p-[1rem]">{message}</p>
+        <p className="text-red-600 p-[1rem] italic">{message}</p>
       )}
     </div>
   );

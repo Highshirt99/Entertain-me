@@ -3,6 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { MovieItemType } from "../utils/Types";
 import { moviesApiRequest } from "../utils/MovieApiRequest";
+import loader from "../assets/loaderImg.jpg";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
 
@@ -17,8 +18,8 @@ const Movies = () => {
   const [genreList, setGenreList] = useState<GenreType[]>([]);
   const [moviesList, setMoviesList] = useState<MovieItemType[]>([]);
   const [pageNumber, setPageNumber] = useState(0);
+  const [loading, setLoading] = useState(false);
 
-  
   const moviesPerPage = 10;
 
   const pagesVisited = pageNumber * moviesPerPage;
@@ -32,6 +33,7 @@ const Movies = () => {
   const movies: MovieItemType[] = [];
 
   const handleGetGenre = async (genre: number) => {
+    setLoading(true)
     movies.length = 0;
     const upcomingMovies = (await moviesApiRequest.get("/movie/upcoming")).data
       .results;
@@ -42,6 +44,7 @@ const Movies = () => {
     const nowPlaying = (await moviesApiRequest.get("/movie/now_playing")).data
       .results;
 
+      if(upcomingMovies || trendingMovies || popularMovies || nowPlaying) { setLoading(false) }
     const upcomingMovieGenre = upcomingMovies.filter((movie: MovieItemType) =>
       movie.genre_ids?.includes(genre)
     );
@@ -91,9 +94,14 @@ const Movies = () => {
       ));
 
   useEffect(() => {
+    setLoading(true);
     const getGenreList = async () => {
       const response = await moviesApiRequest.get("/genre/movie/list");
       setGenreList(response.data.genres);
+      if (response.data.genres) {
+        setLoading(false);
+      }
+
       // console.log(genreList);
     };
     getGenreList();
@@ -102,44 +110,52 @@ const Movies = () => {
   return (
     <div className="text-white">
       <Header />
-      <div className="p-[1rem] grid grid-cols-3 lg:grid-cols-5 midi:grid-cols-4 gap-3">
-        {genreList.map((genre) => (
-          <p
-            key={genre.id}
-            className="cursor-pointer lg:w-[120px] min-w-[90px] text-center text-[14px] border border-dotted border-white rounded-md p-[5px] hover:bg-bodyBg hover:text-textCol transition-all duration-700 ease-in-out"
-            onClick={() => handleGetGenre(genre.id)}
-          >
-            {genre.name}
-          </p>
-        ))}
-      </div>
-      <h1 className="mt-3 text-center font-extrabold text-white tracking-widest">
-        {genreName}
-      </h1>
-
-      {moviesList[0]?.length > 0 ? (
-        <>
-          <div className="grid grid-cols-2 midi:grid-cols-4 tab:grid-cols-4 lg:grid-cols-5 gap-4 mt-[1rem] p-[2rem]">
-            {displayMovies}
-          </div>
-          <div className="mb-5">
-            <ReactPaginate
-              previousLabel={"Previous"}
-              nextLabel={"Next"}
-              pageCount={pageCount}
-              onPageChange={changePage}
-              containerClassName={"paginationButtons"}
-              previousLinkClassName={"previousButton"}
-              nextLinkClassName={"nextButton"}
-              activeLinkClassName={"paginationActive"}
-              disabledClassName={"paginationDisabled"}
-            />
-          </div>
-        </>
+      {loading ? (
+        <div className="flex items-center justify-center mt-[100px]">
+          <img src={loader} alt="" width="50px" />
+        </div>
       ) : (
-        <p className="text-textCol text-center p-3 text-sm">
-          No results found yet, click to select a genre.
-        </p>
+        <div>
+          <div className="p-[1rem] grid grid-cols-3 lg:grid-cols-5 midi:grid-cols-4 gap-3">
+            {genreList.map((genre) => (
+              <p
+                key={genre.id}
+                className="cursor-pointer lg:w-[120px] min-w-[90px] text-center text-[14px] border border-dotted border-white rounded-md p-[5px] hover:bg-bodyBg hover:text-textCol transition-all duration-700 ease-in-out"
+                onClick={() => handleGetGenre(genre.id)}
+              >
+                {genre.name}
+              </p>
+            ))}
+          </div>
+          <h1 className="mt-3 text-center font-extrabold text-white tracking-widest">
+            {genreName}
+          </h1>
+
+          {moviesList[0]?.length > 0 ? (
+            <>
+              <div className="grid grid-cols-2 midi:grid-cols-4 tab:grid-cols-4 lg:grid-cols-5 gap-4 mt-[1rem] p-[2rem]">
+                {displayMovies}
+              </div>
+              <div className="mb-5">
+                <ReactPaginate
+                  previousLabel={"Previous"}
+                  nextLabel={"Next"}
+                  pageCount={pageCount}
+                  onPageChange={changePage}
+                  containerClassName={"paginationButtons"}
+                  previousLinkClassName={"previousButton"}
+                  nextLinkClassName={"nextButton"}
+                  activeLinkClassName={"paginationActive"}
+                  disabledClassName={"paginationDisabled"}
+                />
+              </div>
+            </>
+          ) : (
+            <p className="text-textCol text-center p-3 text-sm">
+              No results found yet, click to select a genre.
+            </p>
+          )}
+        </div>
       )}
       <Footer />
     </div>

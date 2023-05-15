@@ -26,12 +26,12 @@ const MoviesCarousel = ({ movies }: MovieItemProp) => {
       slidesToSlide: 4,
     },
     tablet: {
-      breakpoint: { max: 1024, min: 464 },
+      breakpoint: { max: 1024, min: 700},
       items: 4,
       slidesToSlide: 3,
     },
     mobile: {
-      breakpoint: { max: 464, min: 0 },
+      breakpoint: { max: 700, min: 0 },
       items: 3,
       slidesToSlide: 2,
     },
@@ -46,20 +46,25 @@ const MoviesCarousel = ({ movies }: MovieItemProp) => {
 
       <Carousel responsive={responsive} swipeable={true}>
         {movies?.map((movie) => (
-          <div key={movie.id}>
-            <Link to={movie.media_type === "tv" ? `/tv/${movie.id}` : `/movie/${movie.id}`}>
+          <div key={movie.id} className="min-h-[170px] relative">
+            <Link
+              to={
+                movie.media_type === "tv"
+                  ? `/tv/${movie.id}`
+                  : `/movie/${movie.id}`
+              }
+            >
               <img
                 src={`${imgBaseUrl}/original/${movie.poster_path!}`}
                 alt=""
-                width="100px"
-                className="h-[80px] object-cover rounded-md hover:scale-110 cursor-pointer"
+                className="h-[80px] object-cover rounded-md hover:scale-110 cursor-pointer w-[100px] md:w-[120px]"
               />
             </Link>
             <div className="flex flex-col gap-3 mt-2 ">
-              <p className="text-white text-[12px] w-[120px]">
+              <p className="text-white text-[12px] w-[110px]">
                 {movie.media_type === "tv" ? movie.name : movie.title}
               </p>
-              <div className="flex items-center gap-5 text-gray-500">
+              <div className="flex gap-3  text-gray-500 absolute bottom-0">
                 <p className="text-gray-500">
                   {movie.media_type === "tv"
                     ? movie.first_air_date?.split("-")[0]
@@ -67,7 +72,7 @@ const MoviesCarousel = ({ movies }: MovieItemProp) => {
                 </p>
                 <div className="flex items-center gap-1">
                   {movie.media_type === "tv" ? (
-                    <MdTv className="text-[13px]" />
+                    <MdTv className="text-[13px] " />
                   ) : (
                     <MdMovie className="text-[13px]" />
                   )}

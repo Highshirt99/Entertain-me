@@ -9,7 +9,7 @@ import  NowPlaying from "../MovieCategories.tsx/NowPlaying";
 
 const Home = () => {
   return (
-    <div className="">
+    <div className="h-fit">
       <Header />
       <Search />
       <div className="h-auto">

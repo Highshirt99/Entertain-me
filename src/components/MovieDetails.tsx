@@ -5,20 +5,25 @@ import Header from "./Header";
 import Footer from "./Footer";
 import Search from "./Search";
 import { CastType, MovieItemType } from "../utils/Types";
+import loader from "../assets/loaderImg.jpg";
 import SimilarMovies from "../MovieCategories.tsx/SimilarMovies";
-
 
 const MovieDetails = () => {
   const { id } = useParams();
   const [movieDetails, setMovieDetails] = useState<MovieItemType>({});
   const [casts, setCasts] = useState<CastType[]>([]);
-  // const [tvDetails, setTvDetails] = useState<MovieItemType>({});
+  const [loading, setLoading] = useState(false);
+
   const imgBaseUrl = "https://image.tmdb.org/t/p";
 
   useEffect(() => {
+    setLoading(true);
     const getMovieDetails = async () => {
       const response = await moviesApiRequest.get(`/movie/${id}`);
       setMovieDetails(response.data);
+      if (response.data) {
+        setLoading(false);
+      }
     };
 
     const getCasts = async () => {
@@ -34,95 +39,116 @@ const MovieDetails = () => {
     // };
 
     // getTvDetails()
-  });
+  }, [id]);
 
   return (
     <div>
       <Header />
       <Search />
-      <div
-        className="text-white  p-[1rem] flex flex-col lg:flex-row
+      {loading ? (
+        <div className="flex items-center justify-center mt-[100px]">
+          <img src={loader} alt="" width="50px" />
+        </div>
+      ) : (
+        <>
+        
+          <div
+            className="text-white  p-[1rem] flex flex-col lg:flex-row
       gap-6 lg:gap-12"
-      >
-        <img
-          src={`${imgBaseUrl}/original/${
-            movieDetails.backdrop_path
-              ? movieDetails.backdrop_path
-              : movieDetails.poster_path
-          }`}
-          alt=""
-          className="h-[250px] lg:h-[500px] w-full lg:w-[300px] object-cover rounded-md"
-        />
-        <div className="lg:flex-3 flex flex-col gap-4 min-h-[800px]">
-          <div>
-            <p>{movieDetails?.title}</p>
-            <p className="text-sm text-gray-500">{movieDetails?.tagline}</p>
-          </div>
-          <span className="border-b-[4px] border-b-red-600 w-fit  pb-1">
-            Description
-          </span>
-          <p className="lg:w-[600px] text-gray-500">{movieDetails?.overview}</p>
-          <p className="text-sm">
-            Votes:
-            <span className="text-gray-500"> {movieDetails?.vote_count}</span>
-          </p>
-          <p className="text-sm">
-            Release date:
-            <span className="text-gray-500"> {movieDetails?.release_date}</span>
-          </p>
-          <p className="text-sm">
-            Status:
-            <span className="text-gray-500"> {movieDetails?.status}</span>
-          </p>
-          <div className="flex flex-col gap-3 text-sm">
-            <p className="border-b-[4px] border-b-red-600 w-fit  pb-1">
-              Genres
-            </p>
-            <ul className="flex gap-4 p-2 rounded-md bg-textCol w-fit">
-              {movieDetails?.genres?.map((item) => (
-                <li
-                  key={item.name}
-                  className="pr-2 border-r border-white last-of-type:border-none"
-                >
-                  {item.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="flex flex-col gap-3 text-sm">
-            <p className="border-b-[4px] border-b-red-600 w-fit  pb-1">
-              Languages
-            </p>
-            <ul className="flex gap-4 p-2 rounded-md bg-textCol w-fit">
-              {movieDetails?.spoken_languages?.map((item) => (
-                <li
-                  key={item.english_name}
-                  className="pr-2 border-r border-white last-of-type:border-r-none last-of-type:border-none"
-                >
-                  {item.english_name}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <p className="text-sm">
-            Duration:
-            <span className="text-gray-500"> {movieDetails.runtime} mins</span>
-          </p>
-
-          <div className="flex flex-col gap-4 text-sm p-[1rem]">
-            <p className="border-b-[4px] border-b-red-600 w-fit  pb-1">Casts</p>
-            <div className="grid grid-cols-3 gap-4 rounded-md lg:grid-cols-6">
-              {casts.map((cast) => (
-                <p key={cast.cast_id} className="font-bold w-fit">
-                  {cast.original_name}
+          >
+            <img
+              src={`${imgBaseUrl}/original/${
+                movieDetails.backdrop_path
+                  ? movieDetails.backdrop_path
+                  : movieDetails.poster_path
+              }`}
+              alt=""
+              className="h-[250px] lg:h-[500px] w-full lg:w-[300px] object-cover rounded-md"
+            />
+            <div className="lg:flex-3 flex flex-col gap-4 min-h-[800px]">
+              <div>
+                <p>{movieDetails?.title}</p>
+                <p className="text-sm text-gray-500">{movieDetails?.tagline}</p>
+              </div>
+              <span className="border-b-[4px] border-b-red-600 w-fit  pb-1">
+                Description
+              </span>
+              <p className="lg:w-[600px] text-gray-500">
+                {movieDetails?.overview}
+              </p>
+              <p className="text-sm">
+                Votes:
+                <span className="text-gray-500">
+                  {" "}
+                  {movieDetails?.vote_count}
+                </span>
+              </p>
+              <p className="text-sm">
+                Release date:
+                <span className="text-gray-500">
+                  {" "}
+                  {movieDetails?.release_date}
+                </span>
+              </p>
+              <p className="text-sm">
+                Status:
+                <span className="text-gray-500"> {movieDetails?.status}</span>
+              </p>
+              <div className="flex flex-col gap-3 text-sm">
+                <p className="border-b-[4px] border-b-red-600 w-fit  pb-1">
+                  Genres
                 </p>
-              ))}
+                <ul className="flex gap-4 p-2 rounded-md bg-textCol w-fit">
+                  {movieDetails?.genres?.map((item) => (
+                    <li
+                      key={item.name}
+                      className="pr-2 border-r border-white last-of-type:border-none"
+                    >
+                      {item.name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex flex-col gap-3 text-sm">
+                <p className="border-b-[4px] border-b-red-600 w-fit  pb-1">
+                  Languages
+                </p>
+                <ul className="flex gap-4 p-2 rounded-md bg-textCol w-fit">
+                  {movieDetails?.spoken_languages?.map((item) => (
+                    <li
+                      key={item.english_name}
+                      className="pr-2 border-r border-white last-of-type:border-r-none last-of-type:border-none"
+                    >
+                      {item.english_name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <p className="text-sm">
+                Duration:
+                <span className="text-gray-500">
+                  {" "}
+                  {movieDetails.runtime} mins
+                </span>
+              </p>
+
+              <div className="flex flex-col gap-4 text-sm p-[1rem]">
+                <p className="border-b-[4px] border-b-red-600 w-fit  pb-1">
+                  Casts
+                </p>
+                <div className="grid grid-cols-3 gap-4 rounded-md lg:grid-cols-6">
+                  {casts.map((cast) => (
+                    <p key={cast.cast_id} className="font-bold w-fit">
+                      {cast.original_name}
+                    </p>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <SimilarMovies id={id} />
+          <SimilarMovies id={id} />
+        </>
+      )}
       <Footer />
     </div>
   );

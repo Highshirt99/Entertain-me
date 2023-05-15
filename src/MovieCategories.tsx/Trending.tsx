@@ -22,7 +22,7 @@ const Trending = () => {
   }, [getTrendingMovies]);
 
   return (
-    <div className="h-[280px] p-[1rem]">
+    <div className="h-auto px-[1rem] my-[20px]">
       <div className="flex items-center gap-3 mb-3">
         <h1 className="text-white font-bold tracking-wide py-4 text-[20px]">
           Trending {trendingOption === "day" ? "today" : "this week"}
