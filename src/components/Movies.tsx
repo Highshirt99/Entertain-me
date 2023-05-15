@@ -33,7 +33,7 @@ const Movies = () => {
   const movies: MovieItemType[] = [];
 
   const handleGetGenre = async (genre: number) => {
-    setLoading(true)
+    setLoading(true);
     movies.length = 0;
     const upcomingMovies = (await moviesApiRequest.get("/movie/upcoming")).data
       .results;
@@ -44,7 +44,9 @@ const Movies = () => {
     const nowPlaying = (await moviesApiRequest.get("/movie/now_playing")).data
       .results;
 
-      if(upcomingMovies || trendingMovies || popularMovies || nowPlaying) { setLoading(false) }
+    if (upcomingMovies || trendingMovies || popularMovies || nowPlaying) {
+      setLoading(false);
+    }
     const upcomingMovieGenre = upcomingMovies.filter((movie: MovieItemType) =>
       movie.genre_ids?.includes(genre)
     );
@@ -110,27 +112,27 @@ const Movies = () => {
   return (
     <div className="text-white">
       <Header />
+
+      <div className="p-[1rem] grid grid-cols-3 lg:grid-cols-5 midi:grid-cols-4 gap-3">
+        {genreList.map((genre) => (
+          <p
+            key={genre.id}
+            className="cursor-pointer lg:w-[120px] min-w-[90px] text-center text-[14px] border border-dotted border-white rounded-md p-[5px] hover:bg-bodyBg hover:text-textCol transition-all duration-700 ease-in-out"
+            onClick={() => handleGetGenre(genre.id)}
+          >
+            {genre.name}
+          </p>
+        ))}
+      </div>
+      <h1 className="mt-3 text-center font-extrabold text-white tracking-widest">
+        {genreName}
+      </h1>
       {loading ? (
         <div className="flex items-center justify-center mt-[100px]">
           <img src={loader} alt="" width="50px" />
         </div>
       ) : (
         <div>
-          <div className="p-[1rem] grid grid-cols-3 lg:grid-cols-5 midi:grid-cols-4 gap-3">
-            {genreList.map((genre) => (
-              <p
-                key={genre.id}
-                className="cursor-pointer lg:w-[120px] min-w-[90px] text-center text-[14px] border border-dotted border-white rounded-md p-[5px] hover:bg-bodyBg hover:text-textCol transition-all duration-700 ease-in-out"
-                onClick={() => handleGetGenre(genre.id)}
-              >
-                {genre.name}
-              </p>
-            ))}
-          </div>
-          <h1 className="mt-3 text-center font-extrabold text-white tracking-widest">
-            {genreName}
-          </h1>
-
           {moviesList[0]?.length > 0 ? (
             <>
               <div className="grid grid-cols-2 midi:grid-cols-4 tab:grid-cols-4 lg:grid-cols-5 gap-4 mt-[1rem] p-[2rem]">

@@ -110,12 +110,8 @@ const TV = () => {
   return (
     <div className="text-white">
       <Header />
-      {loading ? (
-        <div className="flex items-center justify-center mt-[100px]">
-          <img src={loader} alt="" width="50px" />
-        </div>
-      ) : (
-        <div>
+ 
+      
           <div className="p-[1rem] grid grid-cols-3 lg:grid-cols-5 midi:grid-cols-4 gap-3">
             {genreList.map((genre) => (
               <p
@@ -130,7 +126,11 @@ const TV = () => {
           <h1 className="mt-3 text-center font-extrabold text-white tracking-widest">
             {genreName}
           </h1>
-
+          {loading ? (
+        <div className="flex items-center justify-center mt-[100px]">
+          <img src={loader} alt="" width="50px" />
+        </div>
+      ) : (  <div>
           {tvList[0]?.length > 0 ? (
             <>
               <div className="grid grid-cols-2 midi:grid-cols-4 tab:grid-cols-4 lg:grid-cols-5 gap-4 mt-[1rem] p-[2rem]">
