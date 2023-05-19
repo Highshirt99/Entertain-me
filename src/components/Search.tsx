@@ -76,7 +76,7 @@ const Search = () => {
             type="text"
             placeholder="Search movie or TV series"
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="-ml-4 outline-none text-darkBlue w-full"
+            className="w-full -ml-4 outline-none text-darkBlue bg-none"
           />
         </div>
         <button
@@ -99,22 +99,20 @@ const Search = () => {
           </h1>
           <div className="grid grid-cols-3 midi:grid-cols-4 tab:grid-cols-4 lg:grid-cols-5 gap-4 mt-[2rem]">
             {displayMovies}
-
-  
           </div>
           <div className="mb-5">
-              <ReactPaginate
-                previousLabel={"Previous"}
-                nextLabel={"Next"}
-                pageCount={pageCount}
-                onPageChange={changePage}
-                containerClassName={"paginationButtons"}
-                previousLinkClassName={"previousButton"}
-                nextLinkClassName={"nextButton"}
-                activeLinkClassName={"paginationActive"}
-                disabledClassName={"paginationDisabled"}
-              />
-            </div>
+            <ReactPaginate
+              previousLabel={"Previous"}
+              nextLabel={"Next"}
+              pageCount={pageCount}
+              onPageChange={changePage}
+              containerClassName={"paginationButtons"}
+              previousLinkClassName={"previousButton"}
+              nextLinkClassName={"nextButton"}
+              activeLinkClassName={"paginationActive"}
+              disabledClassName={"paginationDisabled"}
+            />
+          </div>
         </div>
       ) : (
         <p className="text-red-600 p-[1rem] italic">{message}</p>
